@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>NẠP LẬU TIKTOK</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:#050505;
+    color:#fff
+}
+
+.card{
+    width:100%;
+    max-width:420px;
+    padding:28px 22px;
+    text-align:center;
+    background:#111;
+    border:1px solid #333;
+    border-radius:22px;
+    box-shadow:0 15px 50px #000
+}
+
+.logo{
+    width:75px;
+    height:75px;
+    margin:0 auto 16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ff0050,#00d9ff);
+    font-size:30px
+}
+
+h1{
+    font-size:24px;
+    margin-bottom:8px
+}
+
+.sub{
+    color:#999;
+    font-size:13px;
+    margin-bottom:22px
+}
+
+input{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    border:1px solid #333;
+    border-radius:12px;
+    outline:none;
+    background:#202020;
+    color:#fff;
+    font-size:15px
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:11px;
+    border:0;
+    border-radius:12px;
+    color:#fff;
+    font-size:15px;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(90deg,#ff0050,#00d9ff)
+}
+
+.getkey{
+    background:linear-gradient(90deg,#00c6ff,#0072ff)
+}
+
+.message{
+    min-height:20px;
+    margin-top:12px;
+    color:#ff526b;
+    font-size:13px
+}
+
+.info{
+    margin-top:18px;
+    color:#777;
+    font-size:12px;
+    line-height:1.7
+}
+
+.hidden{
+    display:none!important
+}
+
+.loading{
+    margin-top:20px
+}
+
+.progress{
+    width:100%;
+    height:15px;
+    margin:18px 0 10px;
+    background:#292929;
+    border-radius:20px;
+    overflow:hidden
+}
+
+.bar{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#ff0050,#00d9ff)
+}
+
+.percent{
+    font-size:28px;
+    font-weight:bold
+}
+
+.result{
+    margin-top:20px;
+    padding:20px;
+    background:#1b1b1b;
+    border:1px solid #333;
+    border-radius:15px;
+    line-height:1.8
+}
+
+.footer{
+    margin-top:20px;
+    color:#555;
+    font-size:11px;
+    line-height:1.7
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<!-- TRANG NHẬP KEY -->
+
+<div id="keyPage">
+
+    <div class="logo">P</div>
+
+    <h1>WEBSITE CHÍNH</h1>
+
+    <div class="sub">
+        Nhập KEY để tiếp tục
+    </div>
+
+    <!-- NÚT GET KEY -->
+
+    <button
+        class="getkey"
+        onclick="openGetKey()">
+        GET KEY
+    </button>
+
+    <input
+        id="keyInput"
+        type="text"
+        placeholder="Nhập KEY..."
+        autocomplete="off">
+
+    <button onclick="checkKey()">
+        XÁC NHẬN KEY
+    </button>
+
+    <div
+        id="keyMessage"
+        class="message">
+    </div>
+
+    <div class="info">
+        Chưa có KEY?<br>
+        Nhấn nút GET KEY phía trên.
+    </div>
+
+</div>
+
+
+<!-- TRANG NHẬP ID -->
+
+<div id="idPage" class="hidden">
+
+    <div class="logo">P</div>
+
+    <h1>NHẬP ID</h1>
+
+    <div class="sub">
+        Nhập ID bắt đầu bằng @
+    </div>
+
+    <input
+        id="idInput"
+        type="text"
+        placeholder="@username"
+        autocomplete="off">
+
+    <button onclick="checkID()">
+        XÁC NHẬN ID
+    </button>
+
+    <div
+        id="idMessage"
+        class="message">
+    </div>
+
+</div>
+
+
+<!-- LOADING -->
+
+<div id="loadingPage" class="hidden">
+
+    <div class="logo">⚡</div>
+
+    <h1>LOADING</h1>
+
+    <div
+        id="percent"
+        class="percent">
+        0%
+    </div>
+
+    <div class="progress">
+
+        <div
+            id="bar"
+            class="bar">
+        </div>
+
+    </div>
+
+    <div id="timer">
+        04:00
+    </div>
+
+    <div class="info">
+        Đang xử lý...
+    </div>
+
+</div>
+
+
+<!-- KẾT QUẢ -->
+
+<div id="resultPage" class="hidden">
+
+    <div class="logo">✓</div>
+
+    <h1>HOÀN TẤT</h1>
+
+    <div class="result">
+
+        ID:
+        <b id="resultID"></b>
+
+        <br><br>
+
+        Đây là sản phẩm của phune259.
+
+    </div>
+
+    <div class="footer">
+        ©KMLTEAM ©MÌNH PHÁT ©THANG ©PHAT ©PHUDUBAI<br>
+        ©TIKTOK:PHUNE259
+    </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/*
+========================================
+LINK WEBSITE GET KEY
+========================================
+
+THAY LINK BÊN DƯỚI BẰNG WEBSITE
+GET KEY CỦA BẠN.
+*/
+
+const GET_KEY_URL =
+"https://layma.net/DI2mmmxaf";
+
+
+/*
+========================================
+NÚT GET KEY
+========================================
+*/
+
+function openGetKey(){
+
+    window.location.href =
+        GET_KEY_URL;
+
+}
+
+
+/*
+========================================
+CHECK KEY
+========================================
+*/
+
+function checkKey(){
+
+    const key =
+        document
+        .getElementById("keyInput")
+        .value
+        .trim();
+
+    const message =
+        document
+        .getElementById("keyMessage");
+
+    message.textContent="";
+
+    if(!key){
+
+        message.textContent =
+            "Vui lòng nhập KEY.";
+
+        return;
+    }
+
+    /*
+    Kiểm tra định dạng demo.
+    */
+
+    const valid =
+        /^KML-NORMAL-[A-Z0-9]+-[A-Z0-9]+$/i
+        .test(key);
+
+    if(!valid){
+
+        message.textContent =
+            "KEY không hợp lệ.";
+
+        return;
+    }
+
+    document
+    .getElementById("keyPage")
+    .classList.add("hidden");
+
+    document
+    .getElementById("idPage")
+    .classList.remove("hidden");
+}
+
+
+/*
+========================================
+CHECK ID
+========================================
+*/
+
+function checkID(){
+
+    const id =
+        document
+        .getElementById("idInput")
+        .value
+        .trim();
+
+    const message =
+        document
+        .getElementById("idMessage");
+
+    message.textContent="";
+
+    if(!id){
+
+        message.textContent =
+            "Vui lòng nhập ID.";
+
+        return;
+    }
+
+    if(!id.startsWith("@")){
+
+        message.textContent =
+            "ID phải bắt đầu bằng @.";
+
+        return;
+    }
+
+    document
+    .getElementById("resultID")
+    .textContent=id;
+
+    document
+    .getElementById("idPage")
+    .classList.add("hidden");
+
+    document
+    .getElementById("loadingPage")
+    .classList.remove("hidden");
+
+    startLoading();
+}
+
+
+/*
+========================================
+LOADING 4 PHÚT
+========================================
+*/
+
+function startLoading(){
+
+    const total=240;
+
+    let elapsed=0;
+
+    const bar =
+        document.getElementById("bar");
+
+    const percent =
+        document.getElementById("percent");
+
+    const timer =
+        document.getElementById("timer");
+
+    const interval =
+        setInterval(function(){
+
+            elapsed++;
+
+            const value =
+                Math.floor(
+                    elapsed / total * 100
+                );
+
+            const remaining =
+                total-elapsed;
+
+            const minutes =
+                Math.floor(
+                    remaining/60
+                );
+
+            const seconds =
+                remaining%60;
+
+            bar.style.width =
+                value+"%";
+
+            percent.textContent =
+                value+"%";
+
+            timer.textContent =
+                String(minutes)
+                .padStart(2,"0")
+                +":"+
+                String(seconds)
+                .padStart(2,"0");
+
+            if(elapsed>=total){
+
+                clearInterval(interval);
+
+                document
+                .getElementById(
+                    "loadingPage"
+                )
+                .classList.add("hidden");
+
+                document
+                .getElementById(
+                    "resultPage"
+                )
+                .classList.remove("hidden");
+            }
+
+        },1000);
+}
+
+</script>
+
+</body>
+</html>
