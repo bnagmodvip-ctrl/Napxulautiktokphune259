@@ -2,501 +2,928 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>NẠP LẬU TIKTOK</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAPLAUPHU - Coin Store</title>
 
 <style>
 *{
     box-sizing:border-box;
     margin:0;
     padding:0;
-    font-family:Arial,sans-serif
+    font-family:Arial,sans-serif;
 }
 
 body{
     min-height:100vh;
+    background:linear-gradient(135deg,#08000f,#180020,#050008);
+    color:#fff;
+    padding:20px 15px;
+}
+
+.container{
+    width:100%;
+    max-width:600px;
+    margin:auto;
+}
+
+.header{
+    text-align:center;
+    margin-bottom:18px;
+}
+
+.header h1{
+    color:#ff36ad;
+    font-size:30px;
+    text-shadow:0 0 18px #ff36ad;
+}
+
+.header p{
+    color:#aaa;
+    margin-top:6px;
+}
+
+/* SỐ DƯ */
+
+.balance{
+    background:linear-gradient(135deg,#24102e,#160b20);
+    border:1px solid #773281;
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+    margin-bottom:18px;
+    box-shadow:0 0 20px rgba(255,0,180,.18);
+}
+
+.balance-title{
+    color:#bbb;
+    font-size:14px;
+}
+
+.balance-money{
+    color:#ffd166;
+    font-size:28px;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+/* ID */
+
+.id-box{
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:22px;
+}
+
+.id-box label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.id-row{
     display:flex;
+    gap:10px;
+}
+
+.id-row input{
+    flex:1;
+    min-width:0;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #55245f;
+    outline:none;
+    background:#120919;
+    color:white;
+    font-size:15px;
+}
+
+.confirm{
+    border:0;
+    padding:0 17px;
+    border-radius:12px;
+    color:white;
+    font-weight:bold;
+    background:linear-gradient(135deg,#ff1493,#792cff);
+    cursor:pointer;
+}
+
+#message{
+    margin-top:10px;
+    text-align:center;
+    min-height:18px;
+    font-size:14px;
+}
+
+/* COIN */
+
+.title{
+    font-size:21px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.coin-list{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.coin-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:18px;
+    padding:18px;
+    transition:.2s;
+}
+
+.coin-card:hover{
+    border-color:#ff36ad;
+    transform:translateY(-2px);
+}
+
+.coin{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.price{
+    color:#ffd166;
+    font-size:14px;
+    margin-top:6px;
+}
+
+.buy{
+    border:0;
+    padding:12px 17px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#ff1493,#792cff);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* CỤC BÊN TRÁI */
+
+.side{
+    position:fixed;
+    left:0;
+    top:38%;
+    z-index:20;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.side button{
+    width:48px;
+    height:100px;
+    border:0;
+    border-radius:0 17px 17px 0;
+    color:#fff;
+    font-weight:bold;
+    writing-mode:vertical-rl;
+    cursor:pointer;
+    box-shadow:0 0 18px rgba(255,20,147,.35);
+}
+
+.notice-btn{
+    background:linear-gradient(180deg,#ff1493,#792cff);
+}
+
+.task-btn{
+    background:linear-gradient(180deg,#00c6ff,#0072ff);
+}
+
+/* POPUP */
+
+.overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.75);
     align-items:center;
     justify-content:center;
     padding:20px;
-    background:#050505;
-    color:#fff
+    z-index:100;
 }
 
-.card{
+.popup{
     width:100%;
-    max-width:420px;
-    padding:28px 22px;
-    text-align:center;
-    background:#111;
-    border:1px solid #333;
+    max-width:400px;
+    background:#13091c;
+    border:1px solid #773281;
     border-radius:22px;
-    box-shadow:0 15px 50px #000
+    padding:22px;
+    position:relative;
+    box-shadow:0 0 35px rgba(255,20,147,.35);
+    animation:popup .2s ease;
 }
 
-.logo{
-    width:75px;
-    height:75px;
-    margin:0 auto 16px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+@keyframes popup{
+    from{
+        opacity:0;
+        transform:scale(.88);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.close{
+    position:absolute;
+    right:12px;
+    top:12px;
+    width:32px;
+    height:32px;
+    border:0;
     border-radius:50%;
-    background:linear-gradient(135deg,#ff0050,#00d9ff);
-    font-size:30px
-}
-
-h1{
-    font-size:24px;
-    margin-bottom:8px
-}
-
-.sub{
-    color:#999;
-    font-size:13px;
-    margin-bottom:22px
-}
-
-input{
-    width:100%;
-    padding:15px;
-    margin-top:10px;
-    border:1px solid #333;
-    border-radius:12px;
-    outline:none;
-    background:#202020;
+    background:#ff285f;
     color:#fff;
-    font-size:15px
+    font-size:20px;
+    cursor:pointer;
 }
 
-button{
+.popup-img{
     width:100%;
-    padding:15px;
-    margin-top:11px;
+    height:160px;
+    object-fit:cover;
+    border-radius:15px;
+    margin-bottom:15px;
+}
+
+.popup h2{
+    text-align:center;
+    color:#ff45b7;
+    font-size:21px;
+    margin-bottom:12px;
+}
+
+.popup-text{
+    text-align:center;
+    color:#ddd;
+    line-height:1.6;
+}
+
+/* ĐỦ / KHÔNG ĐỦ */
+
+.status-icon{
+    width:70px;
+    height:70px;
+    margin:5px auto 15px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:35px;
+    font-weight:bold;
+}
+
+.success{
+    background:#063c29;
+    color:#00ff9d;
+    border:2px solid #00ff9d;
+}
+
+.error{
+    background:#400818;
+    color:#ff416c;
+    border:2px solid #ff416c;
+}
+
+/* NHIỆM VỤ */
+
+.task-box{
+    background:#1b0d27;
+    border:1px solid #61316d;
+    border-radius:15px;
+    padding:18px;
+    margin-top:10px;
+}
+
+.task-title{
+    color:#00c6ff;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.task-description{
+    color:#ccc;
+    line-height:1.5;
+    font-size:14px;
+}
+
+.receive{
+    width:100%;
+    margin-top:18px;
+    padding:14px;
     border:0;
     border-radius:12px;
     color:#fff;
-    font-size:15px;
+    font-size:16px;
     font-weight:bold;
+    background:linear-gradient(135deg,#00c6ff,#0072ff);
     cursor:pointer;
-    background:linear-gradient(90deg,#ff0050,#00d9ff)
 }
 
-.getkey{
-    background:linear-gradient(90deg,#00c6ff,#0072ff)
+.receive:active,
+.buy:active,
+.confirm:active{
+    transform:scale(.96);
 }
 
-.message{
-    min-height:20px;
-    margin-top:12px;
-    color:#ff526b;
-    font-size:13px
-}
+@media(max-width:450px){
 
-.info{
-    margin-top:18px;
-    color:#777;
-    font-size:12px;
-    line-height:1.7
-}
+    .id-row{
+        flex-direction:column;
+    }
 
-.hidden{
-    display:none!important
-}
+    .confirm{
+        height:45px;
+    }
 
-.loading{
-    margin-top:20px
-}
+    .coin-card{
+        padding:15px;
+    }
 
-.progress{
-    width:100%;
-    height:15px;
-    margin:18px 0 10px;
-    background:#292929;
-    border-radius:20px;
-    overflow:hidden
-}
+    .coin{
+        font-size:18px;
+    }
 
-.bar{
-    width:0%;
-    height:100%;
-    background:linear-gradient(90deg,#ff0050,#00d9ff)
-}
-
-.percent{
-    font-size:28px;
-    font-weight:bold
-}
-
-.result{
-    margin-top:20px;
-    padding:20px;
-    background:#1b1b1b;
-    border:1px solid #333;
-    border-radius:15px;
-    line-height:1.8
-}
-
-.footer{
-    margin-top:20px;
-    color:#555;
-    font-size:11px;
-    line-height:1.7
+    .buy{
+        padding:10px 13px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
-<!-- TRANG NHẬP KEY -->
-
-<div id="keyPage">
-
-    <div class="logo">P</div>
-
-    <h1>WEBSITE CHÍNH</h1>
-
-    <div class="sub">
-        Nhập KEY để tiếp tục
+    <div class="header">
+        <h1>NAPLAUPHU</h1>
+        <p>WEBSITE CUNG CẤP COIN</p>
     </div>
 
-    <!-- NÚT GET KEY -->
+    <!-- SỐ DƯ -->
 
-    <button
-        class="getkey"
-        onclick="openGetKey()">
-        GET KEY
-    </button>
+    <div class="balance">
+        <div class="balance-title">
+            SỐ DƯ HIỆN TẠI
+        </div>
 
-    <input
-        id="keyInput"
-        type="text"
-        placeholder="Nhập KEY..."
-        autocomplete="off">
-
-    <button onclick="checkKey()">
-        XÁC NHẬN KEY
-    </button>
-
-    <div
-        id="keyMessage"
-        class="message">
+        <div class="balance-money" id="balance">
+            5.000 VNĐ
+        </div>
     </div>
 
-    <div class="info">
-        Chưa có KEY?<br>
-        Nhấn nút GET KEY phía trên.
+    <!-- NHẬP ID -->
+
+    <div class="id-box">
+
+        <label>Nhập ID</label>
+
+        <div class="id-row">
+
+            <input
+                type="text"
+                id="userID"
+                placeholder="Nhập ID của bạn..."
+            >
+
+            <button
+                class="confirm"
+                onclick="confirmID()"
+            >
+                XÁC NHẬN
+            </button>
+
+        </div>
+
+        <div id="message"></div>
+
     </div>
 
-</div>
+    <!-- COIN -->
 
-
-<!-- TRANG NHẬP ID -->
-
-<div id="idPage" class="hidden">
-
-    <div class="logo">P</div>
-
-    <h1>NHẬP ID</h1>
-
-    <div class="sub">
-        Nhập ID bắt đầu bằng @
+    <div class="title">
+        CHỌN GÓI COIN
     </div>
 
-    <input
-        id="idInput"
-        type="text"
-        placeholder="@username"
-        autocomplete="off">
+    <div class="coin-list">
 
-    <button onclick="checkID()">
-        XÁC NHẬN ID
-    </button>
+        <div class="coin-card">
+            <div>
+                <div class="coin">25 COIN</div>
+                <div class="price">10.000 VNĐ</div>
+            </div>
 
-    <div
-        id="idMessage"
-        class="message">
-    </div>
+            <button
+                class="buy"
+                onclick="buyCoin(25,10000)"
+            >
+                MUA
+            </button>
+        </div>
 
-</div>
+        <div class="coin-card">
+            <div>
+                <div class="coin">100 COIN</div>
+                <div class="price">50.000 VNĐ</div>
+            </div>
 
+            <button
+                class="buy"
+                onclick="buyCoin(100,50000)"
+            >
+                MUA
+            </button>
+        </div>
 
-<!-- LOADING -->
+        <div class="coin-card">
+            <div>
+                <div class="coin">9999 COIN</div>
+                <div class="price">230.000 VNĐ</div>
+            </div>
 
-<div id="loadingPage" class="hidden">
-
-    <div class="logo">⚡</div>
-
-    <h1>LOADING</h1>
-
-    <div
-        id="percent"
-        class="percent">
-        0%
-    </div>
-
-    <div class="progress">
-
-        <div
-            id="bar"
-            class="bar">
+            <button
+                class="buy"
+                onclick="buyCoin(9999,230000)"
+            >
+                MUA
+            </button>
         </div>
 
     </div>
 
-    <div id="timer">
-        04:00
-    </div>
+</div>
 
-    <div class="info">
-        Đang xử lý...
+
+<!-- CỤC BÊN TRÁI -->
+
+<div class="side">
+
+    <button
+        class="notice-btn"
+        onclick="openNotice()"
+    >
+        THÔNG BÁO
+    </button>
+
+    <button
+        class="task-btn"
+        onclick="openTask()"
+    >
+        NHIỆM VỤ
+    </button>
+
+</div>
+
+
+<!-- POPUP THÔNG BÁO -->
+
+<div
+    class="overlay"
+    id="noticeOverlay"
+>
+
+    <div class="popup">
+
+        <button
+            class="close"
+            onclick="closeNotice()"
+        >
+            ×
+        </button>
+
+        <img
+            class="popup-img"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo4Zptf6ucQzfKE1TwfNWpHAaD6_V0-KWeyvuTZOfnkg&s"
+            alt="Thông báo"
+        >
+
+        <h2>
+            WELCOME TO WEBSITE NAPLAUPHU
+        </h2>
+
+        <div class="popup-text">
+            WEBSITE CUNG CẤP COIN Tiktok Uy tín số 1 ĐẶC TRƯNG LÊN HÀNG ĐẦU SỐ 1 VIỆT NAM 
+        </div>
+
     </div>
 
 </div>
 
 
-<!-- KẾT QUẢ -->
+<!-- POPUP TIỀN -->
 
-<div id="resultPage" class="hidden">
+<div
+    class="overlay"
+    id="moneyOverlay"
+>
 
-    <div class="logo">✓</div>
+    <div class="popup">
 
-    <h1>HOÀN TẤT</h1>
+        <button
+            class="close"
+            onclick="closeMoney()"
+        >
+            ×
+        </button>
 
-    <div class="result">
+        <div id="moneyContent"></div>
 
-        ID:
-        <b id="resultID"></b>
-
-        <br><br>
-
-        Đây là sản phẩm của phune259.
-
-    </div>
-
-    <div class="footer">
-        ©KMLTEAM ©MÌNH PHÁT ©THANG ©PHAT ©PHUDUBAI<br>
-        ©TIKTOK:PHUNE259
     </div>
 
 </div>
+
+
+<!-- POPUP NHIỆM VỤ -->
+
+<div
+    class="overlay"
+    id="taskOverlay"
+>
+
+    <div class="popup">
+
+        <button
+            class="close"
+            onclick="closeTask()"
+        >
+            ×
+        </button>
+
+        <h2>
+            NHIỆM VỤ NHẬN
+        </h2>
+
+        <div class="task-box">
+
+            <div class="task-title">
+                NHIỆM VỤ KIẾM TIỀN
+            </div>
+
+            <div class="task-description">
+                Hoàn thành nhiệm vụ để nhận thêm
+                1.000 VNĐ vào số dư.
+            </div>
+
+            <button
+                class="receive"
+                onclick="receiveTask()"
+            >
+                NHẬN
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
 
 <script>
 
-/*
-========================================
-LINK WEBSITE GET KEY
-========================================
+/* =========================
+   SỐ DƯ
+========================= */
 
-THAY LINK BÊN DƯỚI BẰNG WEBSITE
-GET KEY CỦA BẠN.
-*/
+let balance =
+    Number(localStorage.getItem("naplau_balance"));
 
-const GET_KEY_URL =
-"https://layma.net/DI2mmmxaf";
-
-
-/*
-========================================
-NÚT GET KEY
-========================================
-*/
-
-function openGetKey(){
-
-    window.location.href =
-        GET_KEY_URL;
-
+if(
+    !Number.isFinite(balance) ||
+    balance < 0
+){
+    balance = 5000;
 }
 
 
-/*
-========================================
-CHECK KEY
-========================================
-*/
+/* =========================
+   NHẬN THƯỞNG TỪ NHIỆM VỤ
+========================= */
 
-function checkKey(){
+const params =
+    new URLSearchParams(window.location.search);
 
-    const key =
-        document
-        .getElementById("keyInput")
-        .value
-        .trim();
+const reward =
+    params.get("reward");
 
-    const message =
-        document
-        .getElementById("keyMessage");
+const rewardToken =
+    params.get("task");
 
-    message.textContent="";
 
-    if(!key){
+if(
+    reward === "1000" &&
+    rewardToken === "naplau"
+){
 
-        message.textContent =
-            "Vui lòng nhập KEY.";
+    balance += 1000;
 
-        return;
-    }
+    localStorage.setItem(
+        "naplau_balance",
+        balance
+    );
 
     /*
-    Kiểm tra định dạng demo.
+      Xóa tham số khỏi thanh địa chỉ
+      để không cộng lại khi F5.
     */
 
-    const valid =
-        /^KML-NORMAL-[A-Z0-9]+-[A-Z0-9]+$/i
-        .test(key);
+    window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+    );
 
-    if(!valid){
+    setTimeout(function(){
 
-        message.textContent =
-            "KEY không hợp lệ.";
+        showMoneyPopup(
+            true,
+            "Bạn đã nhận thành công <b>1.000 VNĐ</b> từ nhiệm vụ!"
+        );
 
-        return;
-    }
-
-    document
-    .getElementById("keyPage")
-    .classList.add("hidden");
-
-    document
-    .getElementById("idPage")
-    .classList.remove("hidden");
+    },500);
 }
 
 
-/*
-========================================
-CHECK ID
-========================================
-*/
+localStorage.setItem(
+    "naplau_balance",
+    balance
+);
 
-function checkID(){
+
+/* =========================
+   HIỂN THỊ SỐ DƯ
+========================= */
+
+function updateBalance(){
+
+    document.getElementById(
+        "balance"
+    ).innerText =
+        balance.toLocaleString("vi-VN")
+        + " VNĐ";
+
+}
+
+updateBalance();
+
+
+/* =========================
+   ID
+========================= */
+
+let currentID = "";
+
+
+function confirmID(){
 
     const id =
-        document
-        .getElementById("idInput")
-        .value
-        .trim();
+        document.getElementById(
+            "userID"
+        ).value.trim();
 
     const message =
-        document
-        .getElementById("idMessage");
+        document.getElementById(
+            "message"
+        );
 
-    message.textContent="";
+    if(id === ""){
 
-    if(!id){
+        message.style.color =
+            "#ff416c";
 
-        message.textContent =
-            "Vui lòng nhập ID.";
-
-        return;
-    }
-
-    if(!id.startsWith("@")){
-
-        message.textContent =
-            "ID phải bắt đầu bằng @.";
+        message.innerText =
+            "Vui lòng nhập ID!";
 
         return;
     }
 
-    document
-    .getElementById("resultID")
-    .textContent=id;
+    currentID = id;
 
-    document
-    .getElementById("idPage")
-    .classList.add("hidden");
+    message.style.color =
+        "#00ff9d";
 
-    document
-    .getElementById("loadingPage")
-    .classList.remove("hidden");
-
-    startLoading();
+    message.innerText =
+        "Đã xác nhận ID: " + currentID;
 }
 
 
-/*
-========================================
-LOADING 4 PHÚT
-========================================
-*/
+/* =========================
+   MUA COIN
+========================= */
 
-function startLoading(){
+function buyCoin(coin,price){
 
-    const total=240;
+    if(currentID === ""){
 
-    let elapsed=0;
+        showMoneyPopup(
+            false,
+            "Vui lòng nhập ID và bấm XÁC NHẬN trước!"
+        );
 
-    const bar =
-        document.getElementById("bar");
+        return;
+    }
 
-    const percent =
-        document.getElementById("percent");
 
-    const timer =
-        document.getElementById("timer");
+    if(balance >= price){
 
-    const interval =
-        setInterval(function(){
+        balance -= price;
 
-            elapsed++;
+        localStorage.setItem(
+            "naplau_balance",
+            balance
+        );
 
-            const value =
-                Math.floor(
-                    elapsed / total * 100
-                );
+        updateBalance();
 
-            const remaining =
-                total-elapsed;
+        showMoneyPopup(
+            true,
+            "Mua thành công " +
+            coin +
+            " Coin với giá " +
+            price.toLocaleString("vi-VN") +
+            " VNĐ."
+        );
 
-            const minutes =
-                Math.floor(
-                    remaining/60
-                );
+    }else{
 
-            const seconds =
-                remaining%60;
+        const missing =
+            price - balance;
 
-            bar.style.width =
-                value+"%";
+        showMoneyPopup(
+            false,
+            "Số dư hiện tại: " +
+            balance.toLocaleString("vi-VN") +
+            " VNĐ<br><br>" +
+            "Bạn còn thiếu: " +
+            missing.toLocaleString("vi-VN") +
+            " VNĐ"
+        );
+    }
+}
 
-            percent.textContent =
-                value+"%";
 
-            timer.textContent =
-                String(minutes)
-                .padStart(2,"0")
-                +":"+
-                String(seconds)
-                .padStart(2,"0");
+/* =========================
+   POPUP TIỀN
+========================= */
 
-            if(elapsed>=total){
+function showMoneyPopup(
+    success,
+    text
+){
 
-                clearInterval(interval);
+    const content =
+        document.getElementById(
+            "moneyContent"
+        );
 
-                document
-                .getElementById(
-                    "loadingPage"
-                )
-                .classList.add("hidden");
+    if(success){
 
-                document
-                .getElementById(
-                    "resultPage"
-                )
-                .classList.remove("hidden");
+        content.innerHTML = `
+
+            <div class="status-icon success">
+                ✓
+            </div>
+
+            <h2>
+                THÀNH CÔNG
+            </h2>
+
+            <div class="popup-text">
+                ${text}
+            </div>
+
+        `;
+
+    }else{
+
+        content.innerHTML = `
+
+            <div class="status-icon error">
+                !
+            </div>
+
+            <h2 style="color:#ff416c;">
+                KHÔNG ĐỦ TIỀN
+            </h2>
+
+            <div class="popup-text">
+                ${text}
+            </div>
+
+        `;
+    }
+
+    document.getElementById(
+        "moneyOverlay"
+    ).style.display = "flex";
+}
+
+
+function closeMoney(){
+
+    document.getElementById(
+        "moneyOverlay"
+    ).style.display = "none";
+
+}
+
+
+/* =========================
+   THÔNG BÁO
+========================= */
+
+function openNotice(){
+
+    document.getElementById(
+        "noticeOverlay"
+    ).style.display = "flex";
+
+}
+
+
+function closeNotice(){
+
+    document.getElementById(
+        "noticeOverlay"
+    ).style.display = "none";
+
+}
+
+
+/* =========================
+   NHIỆM VỤ
+========================= */
+
+function openTask(){
+
+    document.getElementById(
+        "taskOverlay"
+    ).style.display = "flex";
+
+}
+
+
+function closeTask(){
+
+    document.getElementById(
+        "taskOverlay"
+    ).style.display = "none";
+
+}
+
+
+/* =========================
+   NÚT NHẬN
+========================= */
+
+function receiveTask(){
+
+    /*
+      ĐỔI URL NÀY THÀNH WEBSITE
+      NHIỆM VỤ CỦA BẠN.
+    */
+
+    window.location.href =
+        "https://example.com";
+
+}
+
+
+/* =========================
+   CLICK NGOÀI POPUP
+========================= */
+
+document
+.querySelectorAll(".overlay")
+.forEach(function(overlay){
+
+    overlay.addEventListener(
+        "click",
+        function(e){
+
+            if(e.target === overlay){
+
+                overlay.style.display =
+                    "none";
             }
 
-        },1000);
-}
+        }
+    );
+
+});
 
 </script>
 
 </body>
-</html>
+    </html>
